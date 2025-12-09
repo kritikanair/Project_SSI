@@ -52,9 +52,6 @@ const credentialHolderComponent = {
                     <div class="icon-large">📄</div>
                     <h2>No Credentials Yet</h2>
                     <p>You haven't received any credentials yet.</p>
-                    <button class="btn btn-primary" onclick="navigateTo('issuer')">
-                        Issue Your First Credential
-                    </button>
                 </div>
             `;
             return;
