@@ -1,4 +1,4 @@
-const CACHE_NAME = 'ssi-wallet-v1';
+const CACHE_NAME = 'ssi-wallet-v2';
 const urlsToCache = [
     '/',
     '/index.html',

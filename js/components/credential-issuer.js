@@ -12,7 +12,7 @@ const credentialIssuerComponent = {
         return `
             <div class="page-container">
                 <header class="page-header">
-                    <button class="btn-back" onclick="navigateTo('dashboard')">← Back</button>
+                    <button class="btn-back" onclick="navigateTo('role-select')">← Back</button>
                     <h1>Issue Academic Credential</h1>
                 </header>
 
@@ -83,7 +83,7 @@ const credentialIssuerComponent = {
                                 </div>
 
                                 <div class="button-group">
-                                    <button type="button" class="btn btn-secondary" onclick="navigateTo('dashboard')">
+                                    <button type="button" class="btn btn-secondary" onclick="navigateTo('role-select')">
                                         Cancel
                                     </button>
                                     <button type="submit" class="btn btn-primary">

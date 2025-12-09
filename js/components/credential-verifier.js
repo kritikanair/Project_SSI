@@ -10,7 +10,7 @@ const credentialVerifierComponent = {
         return `
             <div class="page-container">
                 <header class="page-header">
-                    <button class="btn-back" onclick="navigateTo('dashboard')">← Back</button>
+                    <button class="btn-back" onclick="navigateTo('role-select')">← Back</button>
                     <h1>Verify Credentials</h1>
                 </header>
 

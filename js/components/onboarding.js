@@ -68,9 +68,14 @@ const onboardingComponent = {
                     </div>
                 </div>
 
-                <button class="btn btn-primary btn-large" onclick="window.onboardingComponent.showStep(1)">
-                    Get Started
-                </button>
+                <div class="button-group">
+                    <button class="btn btn-secondary" onclick="navigateTo('role-select')">
+                        Back
+                    </button>
+                    <button class="btn btn-primary btn-large" onclick="window.onboardingComponent.showStep(1)">
+                        Get Started
+                    </button>
+                </div>
             </div>
         `;
     },

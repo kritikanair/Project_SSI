@@ -8,7 +8,10 @@ const dashboardComponent = {
         return `
             <div class="dashboard-container">
                 <header class="dashboard-header">
-                    <h1>Student Wallet</h1>
+                    <div style="display: flex; align-items: center; gap: 16px;">
+                        <button class="btn-back" onclick="navigateTo('role-select')">← Back</button>
+                        <h1>Student Wallet</h1>
+                    </div>
                     <div class="header-actions" style="display: flex; gap: 10px;">
                         <button class="btn-icon" onclick="window.app.refresh()" title="Refresh">
                             🔄

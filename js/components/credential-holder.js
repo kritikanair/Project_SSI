@@ -48,7 +48,7 @@ const credentialHolderComponent = {
 
         if (credentials.length === 0) {
             container.innerHTML = `
-                <div class="empty-state">
+                <div class="empty-state" style="grid-column: 1 / -1; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 300px;">
                     <div class="icon-large">📄</div>
                     <h2>No Credentials Yet</h2>
                     <p>You haven't received any credentials yet.</p>
