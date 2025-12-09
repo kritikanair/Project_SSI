@@ -52,14 +52,26 @@ window.universityLoginComponent = {
         event.preventDefault();
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const submitButton = event.target.querySelector('button[type="submit"]');
 
-        // Mock backend validation
-        if (email === 'admin@university.edu' && password === 'password') {
-            window.app.showToast('Login successful', 'success');
-            // Navigate to Issuer Dashboard
-            navigateTo('issuer');
-        } else {
-            window.app.showToast('Invalid credentials. Try admin@university.edu / password', 'error');
-        }
+        // Disable button and show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Logging in...';
+
+        // Use API for authentication
+        window.api.universityLogin(email, password)
+            .then(data => {
+                window.app.showToast(data.message || 'Login successful', 'success');
+                // Navigate to Issuer Dashboard
+                setTimeout(() => {
+                    navigateTo('issuer');
+                }, 500);
+            })
+            .catch(error => {
+                window.app.showToast(error.message || 'Login failed. Please try again.', 'error');
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Login into Portal';
+            });
     }
 };

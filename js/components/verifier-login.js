@@ -52,14 +52,26 @@ window.verifierLoginComponent = {
         event.preventDefault();
         const orgId = document.getElementById('org-id').value;
         const password = document.getElementById('password').value;
+        const submitButton = event.target.querySelector('button[type="submit"]');
 
-        // Mock backend validation
-        if (orgId === 'org_demo' && password === 'demo_key') {
-            window.app.showToast('Access granted', 'success');
-            // Navigate to Verifier Dashboard
-            navigateTo('verifier');
-        } else {
-            window.app.showToast('Invalid credentials. Try org_demo / demo_key', 'error');
-        }
+        // Disable button and show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Logging in...';
+
+        // Use API for authentication
+        window.api.verifierLogin(orgId, password)
+            .then(data => {
+                window.app.showToast(data.message || 'Access granted', 'success');
+                // Navigate to Verifier Dashboard
+                setTimeout(() => {
+                    navigateTo('verifier');
+                }, 500);
+            })
+            .catch(error => {
+                window.app.showToast(error.message || 'Login failed. Please try again.', 'error');
+                // Re-enable button
+                submitButton.disabled = false;
+                submitButton.textContent = 'Access Verification Portal';
+            });
     }
 };
