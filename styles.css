@@ -1133,8 +1133,19 @@ textarea {
   animation: slideInRight 0.4s var(--ease-spring);
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   gap: var(--space-3);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+}
+
+.toast span {
+  flex: 1;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.5;
 }
 
 .toast.toast-success {

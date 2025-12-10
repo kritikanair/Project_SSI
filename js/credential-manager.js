@@ -37,10 +37,16 @@ class CredentialManager {
             throw new Error("No active DID for issuer");
         }
 
-        // 2. Create credential ID
+        // 2. Validate that student DID exists
+        const studentDIDExists = await window.storageManager.get('dids', credentialData.studentDID);
+        if (!studentDIDExists) {
+            throw new Error(`Cannot issue credential: Student DID '${credentialData.studentDID}' does not exist in the system. Please verify the DID is correct.`);
+        }
+
+        // 3. Create credential ID
         const credentialId = `urn:uuid:${this.generateUUID()}`;
 
-        // 3. Build the credential following W3C VC Data Model
+        // 4. Build the credential following W3C VC Data Model
         const credential = {
             "@context": [
                 "https://www.w3.org/2018/credentials/v1",
@@ -60,17 +66,17 @@ class CredentialManager {
             }
         };
 
-        // 4. Sign the credential
+        // 5. Sign the credential
         const privateKey = await window.didManager.getPrivateKey();
         const proof = await this.createProof(credential, privateKey, issuerDID);
 
-        // 5. Add proof to credential
+        // 6. Add proof to credential
         const verifiableCredential = {
             ...credential,
             proof: proof
         };
 
-        // 6. Store the credential
+        // 7. Store the credential
         await window.storageManager.save('credentials', verifiableCredential);
         this.credentials.push(verifiableCredential);
 
