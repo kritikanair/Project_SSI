@@ -102,27 +102,28 @@ const credentialIssuerComponent = {
                                 <button onclick="credentialIssuerComponent.loadHistory()" class="btn btn-small btn-secondary">Refresh</button>
                             </div>
                             
-                            <div class="table-responsive">
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Student</th>
-                                            <th>Degree</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="history-table-body">
-                                        ${this.renderHistoryRows()}
-                                    </tbody>
-                                </table>
-                            </div>
-                            ${this.issuedCredentials.length === 0 ? `
+                            ${this.issuedCredentials.length > 0 ? `
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Student</th>
+                                                <th>Degree</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="history-table-body">
+                                            ${this.renderHistoryRows()}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            ` : `
                                 <div class="empty-state">
                                     <div class="icon-large">📜</div>
                                     <p>No credentials issued yet</p>
                                 </div>
-                            ` : ''}
+                            `}
                         </div>
                     </div>
                 </div>
