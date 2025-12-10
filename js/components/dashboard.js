@@ -70,6 +70,17 @@ const dashboardComponent = {
                                     <input type="file" id="import-file" accept=".json" onchange="dashboardComponent.importWallet(this)" />
                                 </div>
                              </div>
+
+                             <hr style="margin: 20px 0; border: 1px solid var(--glass-border);" />
+
+                             <div class="credential-detail-section">
+                                <h3 style="color: var(--error-color);">⚠️ Danger Zone</h3>
+                                <p class="text-muted mb-4">Permanently delete your identity and all associated credentials. This action cannot be undone.</p>
+                                
+                                <button class="btn btn-danger btn-block" onclick="dashboardComponent.deleteIdentity()">
+                                    🗑️ Delete Identity
+                                </button>
+                             </div>
                         </div>
                     </div>
                 </div>
@@ -185,6 +196,50 @@ const dashboardComponent = {
             window.app.showSuccess('Wallet backup downloaded');
         } catch (e) {
             window.app.showError('Export failed: ' + e.message);
+        }
+    },
+
+    async deleteIdentity() {
+        // Confirm with user
+        const confirmed = confirm(
+            '⚠️ WARNING: This will permanently delete your identity and all credentials.\n\n' +
+            'This action cannot be undone!\n\n' +
+            'Are you sure you want to continue?'
+        );
+
+        if (!confirmed) return;
+
+        // Double confirmation
+        const doubleConfirm = confirm(
+            'This is your last chance!\n\n' +
+            'Click OK to permanently delete your identity.'
+        );
+
+        if (!doubleConfirm) return;
+
+        try {
+            window.app.showLoading();
+
+            // Delete DID and all credentials from IndexedDB
+            const hasRemainingIdentities = await window.didManager.deleteDID();
+
+            window.app.hideLoading();
+            window.app.showSuccess('Identity deleted successfully');
+
+            // Navigate based on whether there are remaining identities
+            setTimeout(() => {
+                if (hasRemainingIdentities) {
+                    // Remaining identities exist, go to dashboard to show them
+                    navigateTo('dashboard');
+                } else {
+                    // No identities left, go to onboarding to create new one
+                    navigateTo('onboarding');
+                }
+            }, 1000);
+
+        } catch (error) {
+            window.app.hideLoading();
+            window.app.showError('Failed to delete identity: ' + error.message);
         }
     },
 

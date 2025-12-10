@@ -352,6 +352,22 @@ small {
   border-color: rgba(255, 255, 255, 0.2);
 }
 
+.btn-danger {
+  background: var(--red);
+  color: white;
+  border: none;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: #cc2f26;
+  transform: scale(1.02);
+  box-shadow: 0 0 40px rgba(255, 59, 48, 0.4);
+}
+
+.btn-danger:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
 .btn-small {
   padding: 10px 20px;
   font-size: 0.875rem;

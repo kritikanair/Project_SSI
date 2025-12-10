@@ -156,6 +156,37 @@ class DIDManager {
         return await window.storageManager.getAll('dids');
     }
 
+    /**
+     * Delete the active DID and all associated credentials
+     */
+    async deleteDID() {
+        if (!this.activeDID) {
+            throw new Error("No active DID to delete");
+        }
+
+        // Delete the DID from storage
+        await window.storageManager.delete('dids', this.activeDID.id);
+
+        // Delete all credentials
+        const credentials = await window.storageManager.getAll('credentials');
+        for (const cred of credentials) {
+            await window.storageManager.delete('credentials', cred.id);
+        }
+
+        // Clear active DID
+        this.activeDID = null;
+
+        // Check if there are any remaining DIDs and load the first one
+        const remainingDIDs = await window.storageManager.getAll('dids');
+        if (remainingDIDs && remainingDIDs.length > 0) {
+            this.activeDID = remainingDIDs[0];
+            console.log('Loaded remaining DID:', this.activeDID.id);
+        }
+
+        console.log('DID and all credentials deleted');
+        return this.activeDID !== null; // Return true if there are remaining DIDs
+    }
+
     // Legacy stubs to prevent crashing if something else calls them
     async unlock() { return true; }
     lock() { }

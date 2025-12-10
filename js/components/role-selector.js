@@ -21,7 +21,7 @@ window.roleSelectorComponent = {
                     </div>
 
                     <!-- Student Role -->
-                    <div class="role-card" onclick="navigateTo('onboarding')">
+                    <div class="role-card" onclick="window.roleSelectorComponent.handleStudentRoleClick()">
                         <div class="role-icon">👤</div>
                         <h3>My Credentials</h3>
                         <p>View and share your credentials selectively</p>
@@ -40,5 +40,29 @@ window.roleSelectorComponent = {
 
     init() {
         console.log('Role selector initialized');
+    },
+
+    /**
+     * Handle student role click - check for existing wallet
+     */
+    async handleStudentRoleClick() {
+        try {
+            // Check if wallet exists in IndexedDB
+            const dids = await window.storageManager.getAll('dids');
+
+            if (dids && dids.length > 0) {
+                // Wallet exists, go directly to dashboard
+                console.log('Existing wallet found, navigating to dashboard');
+                navigateTo('dashboard');
+            } else {
+                // No wallet, show onboarding
+                console.log('No wallet found, navigating to onboarding');
+                navigateTo('onboarding');
+            }
+        } catch (error) {
+            console.error('Error checking wallet:', error);
+            // On error, default to onboarding
+            navigateTo('onboarding');
+        }
     }
 };
