@@ -3,7 +3,19 @@
  * Centralized API calls for authentication
  */
 
-const API_BASE_URL = 'http://localhost:3000/api';
+// Detect environment and set appropriate API URL
+const getApiBaseUrl = () => {
+    // Check if running on GitHub Pages
+    if (window.location.hostname === 'kash-gg.github.io') {
+        // Production: Use deployed backend on Render
+        // TODO: Replace this URL with your actual Render URL after deployment
+        return 'https://project-ssi-backend.onrender.com/api';
+    }
+    // Local development
+    return 'http://localhost:3000/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const api = {
     /**
