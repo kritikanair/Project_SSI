@@ -1,4 +1,4 @@
-# Self-Sovereign Identity (SSI) Mobile App
+# Self-Sovereign Identity (SSI) Progressive Web App
 
 A Progressive Web App for Academic Credential Verification using Decentralized Identifiers (DIDs) and Verifiable Credentials with MongoDB backend authentication.
 
