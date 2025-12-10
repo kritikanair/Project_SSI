@@ -221,20 +221,14 @@ const dashboardComponent = {
             window.app.showLoading();
 
             // Delete DID and all credentials from IndexedDB
-            const hasRemainingIdentities = await window.didManager.deleteDID();
+            await window.didManager.deleteDID();
 
             window.app.hideLoading();
             window.app.showSuccess('Identity deleted successfully');
 
-            // Navigate based on whether there are remaining identities
+            // Always redirect to role selector page after deletion
             setTimeout(() => {
-                if (hasRemainingIdentities) {
-                    // Remaining identities exist, go to dashboard to show them
-                    navigateTo('dashboard');
-                } else {
-                    // No identities left, go to onboarding to create new one
-                    navigateTo('onboarding');
-                }
+                navigateTo('role-select');
             }, 1000);
 
         } catch (error) {
