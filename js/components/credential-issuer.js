@@ -111,6 +111,7 @@ const credentialIssuerComponent = {
                                                 <th>Student</th>
                                                 <th>Degree</th>
                                                 <th>Status</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody id="history-table-body">
@@ -150,10 +151,19 @@ const credentialIssuerComponent = {
 
     async init() {
         this.courses = [];
-        this.activeTab = 'issue';
+        // Don't change activeTab here - keep it as is if user was on history tab
+        // this.activeTab = 'issue';
+
         // Add one course by default
         this.addCourse();
+
+        // Load history data
         await this.loadHistory();
+
+        // If we're on history tab, force a re-render to show fresh data
+        if (this.activeTab === 'history') {
+            this.switchTab('history');
+        }
     },
 
     switchTab(tab) {
@@ -233,10 +243,18 @@ const credentialIssuerComponent = {
             this.issuedCredentials = [];
         }
 
-        // If we are currently on history tab, re-render the table
+        // If we are currently on history tab, update the UI
         if (this.activeTab === 'history') {
             const tbody = document.getElementById('history-table-body');
-            if (tbody) tbody.innerHTML = this.renderHistoryRows();
+            if (tbody) {
+                // Check if we still have credentials to show the table or empty state
+                if (this.issuedCredentials.length > 0) {
+                    tbody.innerHTML = this.renderHistoryRows();
+                } else {
+                    // Need to switch to show empty state
+                    this.switchTab('history');
+                }
+            }
         }
     },
 
@@ -247,6 +265,13 @@ const credentialIssuerComponent = {
                 <td>${cred.credentialSubject.name}</td>
                 <td>${cred.credentialSubject.degree}</td>
                 <td><span class="badge badge-success">Issued</span></td>
+                <td>
+                    <button class="btn btn-small btn-icon-danger" 
+                            onclick="if(confirm('Are you sure you want to delete this credential? This will remove it from both your history and the student\\'s wallet.')) { credentialIssuerComponent.deleteCredential('${cred.id}'); }"
+                            title="Delete credential">
+                        🗑️
+                    </button>
+                </td>
             </tr>
         `).join('');
     },
@@ -367,6 +392,29 @@ const credentialIssuerComponent = {
         } catch (error) {
             window.app.hideLoading();
             window.app.showError('Failed to issue credential: ' + error.message);
+        }
+    },
+
+    async deleteCredential(id) {
+        try {
+            window.app.showLoading();
+
+            // Delete the credential
+            await window.credentialManager.deleteCredential(id);
+
+            // Reload history to refresh the UI
+            await this.loadHistory();
+
+            window.app.hideLoading();
+            window.app.showSuccess('Credential deleted successfully!');
+
+            // Re-render the entire history tab to show empty state if needed
+            if (this.activeTab === 'history') {
+                this.switchTab('history');
+            }
+        } catch (error) {
+            window.app.hideLoading();
+            window.app.showError('Failed to delete credential: ' + error.message);
         }
     }
 };
