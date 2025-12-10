@@ -87,17 +87,17 @@ You should see:
 
 In a new terminal from project root:
 ```bash
-python -m http.server 8000
+python -m http.server 5500
 ```
 
 ### 4. Access the Application
 
-Open your browser to: **http://localhost:8000**
+Open your browser to: **http://localhost:5500**
 
 ## 📱 Usage Guide
 
 ### For Students
-1. Click **"My Wallet"** on the home page
+1. Click **"My Credentials"** on the home page
 2. Complete the onboarding process
 3. Create your DID (Decentralized Identifier)
 4. Request credentials from universities
@@ -393,13 +393,6 @@ This is an educational project. Contributions, issues, and feature requests are 
 - MongoDB for database hosting
 - Render for backend hosting
 - The SSI community for pioneering work in decentralized identity
-
-## 📞 Support
-
-For issues and questions:
-- Open an issue on GitHub
-- Check existing documentation in `/backend/README.md`
-- Review the implementation plan in `implementation_plan.md`
 
 ---
 
