@@ -107,8 +107,31 @@ const credentialVerifierComponent = {
         try {
             window.app.showLoading();
 
-            const credential = JSON.parse(data);
-            const result = await window.credentialManager.verifyCredential(credential);
+            const parsedData = JSON.parse(data);
+
+            // Check if this is a selective presentation
+            if (parsedData.type && Array.isArray(parsedData.type) &&
+                parsedData.type.includes('SelectiveDisclosurePresentation')) {
+
+                // Check if all fields are revealed (no commitments or empty commitments)
+                const hasHiddenFields = parsedData.commitments &&
+                    Object.keys(parsedData.commitments).length > 0;
+
+                if (hasHiddenFields) {
+                    window.app.hideLoading();
+                    window.app.showError('This is a selective presentation with hidden fields. Please use the "Selective Presentation" tab to verify it.');
+                    return;
+                }
+
+                // All fields are revealed, verify as selective presentation
+                const result = await window.selectiveDisclosure.verifySelectivePresentation(parsedData);
+                window.app.hideLoading();
+                this.showVerificationResult(result, 'presentation', parsedData);
+                return;
+            }
+
+            // Regular credential verification
+            const result = await window.credentialManager.verifyCredential(parsedData);
 
             window.app.hideLoading();
             this.showVerificationResult(result, 'credential');

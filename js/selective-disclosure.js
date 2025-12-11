@@ -93,8 +93,13 @@ class SelectiveDisclosure {
 
         const subject = credential.credentialSubject;
 
-        // Process all attributes
+        // Process all attributes (excluding structural 'id' field)
         for (const [key, value] of Object.entries(subject)) {
+            // Skip the 'id' field as it's structural/required, not a selectable attribute
+            if (key === 'id') {
+                continue;
+            }
+
             if (attributesToReveal.includes(key)) {
                 // REVEAL: Include actual value and proof
                 presentation.disclosedAttributes[key] = value;
@@ -167,7 +172,9 @@ class SelectiveDisclosure {
             }
 
             result.checks.commitments = allCommitmentsValid;
-            result.hiddenCount = presentation.hiddenAttributeCount || 0;
+
+            // Calculate hidden count from actual commitments object
+            result.hiddenCount = presentation.commitments ? Object.keys(presentation.commitments).length : 0;
 
             // 3. Verify original credential signature
             // We would need to reconstruct the original credential to verify

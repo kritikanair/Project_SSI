@@ -175,6 +175,12 @@ const credentialHolderComponent = {
                 <h3>Selective Disclosure</h3>
                 <p class="text-muted">Choose which attributes to share</p>
                 
+                <div style="margin-bottom: 1rem;">
+                    <button class="btn btn-secondary btn-small" onclick="credentialHolderComponent.toggleSelectAll(event)">
+                        Select All
+                    </button>
+                </div>
+                
                 <div class="attribute-selector">
                     <label class="checkbox-label">
                         <input type="checkbox" class="attr-checkbox" value="name" checked />
@@ -316,6 +322,23 @@ const credentialHolderComponent = {
         }).catch(() => {
             window.app.showError('Failed to copy link');
         });
+    },
+
+    toggleSelectAll(event) {
+        event.preventDefault();
+        const checkboxes = document.querySelectorAll('.attr-checkbox');
+        const button = event.target;
+
+        // Check if all are currently checked
+        const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+
+        // Toggle: if all checked, uncheck all; otherwise check all
+        checkboxes.forEach(cb => {
+            cb.checked = !allChecked;
+        });
+
+        // Update button text
+        button.textContent = allChecked ? 'Select All' : 'Deselect All';
     },
 
     closeModal() {
